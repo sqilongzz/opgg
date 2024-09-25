@@ -1,4 +1,7 @@
 package com.wmsj.service;
 
-public interface HeroService {
+import com.wmsj.common.service.BaseService;
+import com.wmsj.entity.Hero;
+
+public interface HeroService extends BaseService<Hero> {
 }

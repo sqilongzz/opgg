@@ -1,4 +1,9 @@
 package com.wmsj.dao;
 
-public class HeroDao {
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wmsj.entity.Hero;
+import org.apache.ibatis.annotations.Mapper;
+
+@Mapper
+public interface HeroDao extends BaseMapper<Hero> {
 }
