@@ -1,5 +1,6 @@
 package com.wmsj;
 
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -10,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 @EnableScheduling
 @SpringBootApplication
-public class Main {
+public class OPGGApplication {
     /**
      * EnableCaching
      * 功能：启用 Spring 的缓存支持。
@@ -26,6 +27,6 @@ public class Main {
      * 使用场景：需要定期执行某些任务，例如定时备份、定时清理数据等。
      */
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        SpringApplication.run(OPGGApplication.class);
     }
 }
