@@ -3,13 +3,18 @@ package com.wmsj.service;
 import com.wmsj.common.service.BaseService;
 import com.wmsj.entity.Hero;
 
+import java.util.List;
+
 public interface HeroService extends BaseService<Hero> {
     //增
-    public int insertHero(Hero hero) ;
+    int insertHero(Hero hero) ;
     //删
-    public int deleteHero(int id) ;
+    int deleteHero(String id) ;
     //改
-    public int updateHero(Hero hero);
+    int updateHero(Hero hero);
     //查
-    public Hero getHeroById(int id);
+    Hero getHeroById(String id);
+    //分页查询
+    List<Hero> getHeroList();
+
 }
