@@ -1,8 +1,10 @@
 package com.wmsj.entity;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 @Data
+@TableName("tb_version_info")
 public class VersionInfo {
     private Long id;
     private String version;

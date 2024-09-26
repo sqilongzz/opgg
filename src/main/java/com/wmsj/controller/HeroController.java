@@ -21,6 +21,7 @@ public class HeroController {
         }
         //todo log.info
         //todo id生成规则
+        //todo request->entity
         return "fail";
     }
     @DeleteMapping("/deleteHero")
