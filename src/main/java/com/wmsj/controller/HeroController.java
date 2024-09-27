@@ -24,7 +24,7 @@ public class HeroController {
             return "success";
         }
         //todo log.info
-        //todo id生成规则
+        //todo id生成规则 v-14.18-lee_sin
         //todo request->entity
         return "fail";
     }

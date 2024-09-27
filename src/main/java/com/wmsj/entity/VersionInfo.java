@@ -18,4 +18,16 @@ public class VersionInfo {
     private String banRate;
     private String advantageAgainst;
     private String inferiorityAgainst;
+//    "id":"",
+//    "version":"",
+//    "heroId":"",
+//    "equipmentId":"",
+//    "rankLevel":"",
+//    "strength":"",
+//    "heroPosition":"",
+//    "winRate":"",
+//    "appearanceRate":"",
+//    "banRate":"",
+//    "advantageAgainst":"",
+//    "inferiorityAgainst":"",
 }

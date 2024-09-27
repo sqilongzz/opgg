@@ -22,11 +22,11 @@ CREATE TABLE tb_version_info(
                                 `EQUIPMENT_ID` VARCHAR(20) NULL COMMENT '装备版本id',
                                 `RANK_LEVEL` VARCHAR(20) NULL COMMENT '段位-枚举',
                                 `STRENGTH` VARCHAR(10) NULL COMMENT '强度-枚举',
-                                `HERO_POSITITON` VARCHAR(20) NULL COMMENT '分路-枚举',
+                                `HERO_POSITION` VARCHAR(20) NULL COMMENT '分路-枚举',
                                 `WIN_RATE` VARCHAR(20) NULL COMMENT '胜率',
                                 `APPEARANCE_RATE` VARCHAR(20) COMMENT '登场率',
                                 `BAN_RATE` VARCHAR(20) NULL COMMENT '禁用率',
-                                `ADVANTEGE_AGAINST` VARCHAR(20) NULL COMMENT '优势对抗',
+                                `ADVANTAGE_AGAINST` VARCHAR(20) NULL COMMENT '优势对抗',
                                 `INFERIORITY_AGAINST` VARCHAR(20) NULL COMMENT '劣势对抗',
                                 PRIMARY KEY (ID)
 )ENGINE INNODB COMMENT='版本信息表';

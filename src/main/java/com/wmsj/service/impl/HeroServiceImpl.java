@@ -20,6 +20,8 @@ public class HeroServiceImpl extends BaseServiceImpl<HeroDao, Hero> implements H
 
     //增
     public int insertHero(Hero hero) {
+        String id = "v-"+hero.getVersion()+"-"+hero.getEnglishName();
+        hero.setHeroId(id);
         return heroDao.insert(hero);
     }
     //删
