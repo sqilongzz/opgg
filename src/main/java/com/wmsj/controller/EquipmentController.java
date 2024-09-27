@@ -2,7 +2,6 @@ package com.wmsj.controller;
 
 import com.wmsj.entity.Equipment;
 import com.wmsj.service.EquipmentService;
-import com.wmsj.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
