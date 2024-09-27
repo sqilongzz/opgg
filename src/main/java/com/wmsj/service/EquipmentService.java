@@ -2,6 +2,7 @@ package com.wmsj.service;
 
 import com.wmsj.common.service.BaseService;
 import com.wmsj.entity.Equipment;
+import com.wmsj.request.EquipmentRequest;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public interface EquipmentService extends BaseService<Equipment> {
     //查
     Equipment getEquipmentById(String id);
     //分页查询
-    List<Equipment> getEquipmentList();
+    List<Equipment> getEquipmentList(EquipmentRequest request);
 
 }

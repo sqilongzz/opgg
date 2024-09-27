@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wmsj.common.service.impl.BaseServiceImpl;
 import com.wmsj.dao.VersionInfoDao;
 import com.wmsj.entity.VersionInfo;
+import com.wmsj.request.VersionInfoRequest;
 import com.wmsj.service.VersionInfoService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,9 @@ public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, Vers
         return versionInfoDao.selectById(id);
     }
     //分页查询
-    public List<VersionInfo> getVersionInfoList() {
+    public List<VersionInfo> getVersionInfoList(VersionInfoRequest request) {
         QueryWrapper<VersionInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(VersionInfo::getVersion, request.getVersion());
         return versionInfoDao.selectList(queryWrapper);
     }
 }

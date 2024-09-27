@@ -1,6 +1,7 @@
 package com.wmsj.controller;
 
 import com.wmsj.entity.Equipment;
+import com.wmsj.request.EquipmentRequest;
 import com.wmsj.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +47,8 @@ public class EquipmentController {
         return equipmentService.getEquipmentById(id);
 
     }
-    @GetMapping("/getEquipmentList")
-    public List<Equipment> getEquipmentList() {
-        return equipmentService.getEquipmentList();
+    @PostMapping("/getEquipmentList")
+    public List<Equipment> getEquipmentList(@RequestBody EquipmentRequest request) {
+        return equipmentService.getEquipmentList(request);
     }
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wmsj.common.service.impl.BaseServiceImpl;
 import com.wmsj.dao.HeroDao;
 import com.wmsj.entity.Hero;
+import com.wmsj.request.HeroRequest;
 import com.wmsj.service.HeroService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,9 @@ public class HeroServiceImpl extends BaseServiceImpl<HeroDao, Hero> implements H
         return heroDao.selectById(id);
     }
     //分页查询
-    public List<Hero> getHeroList() {
+    public List<Hero> getHeroList(HeroRequest request) {
         QueryWrapper<Hero> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Hero::getVersion,request.getVersion());
         return heroDao.selectList(queryWrapper);
     }
 }

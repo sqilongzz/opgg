@@ -2,6 +2,7 @@ package com.wmsj.service;
 
 import com.wmsj.common.service.BaseService;
 import com.wmsj.entity.VersionInfo;
+import com.wmsj.request.VersionInfoRequest;
 
 import java.util.List;
 
@@ -15,6 +16,6 @@ public interface VersionInfoService extends BaseService<VersionInfo> {
     //查
     VersionInfo getVersionInfoById(String id);
     //分页查询
-    List<VersionInfo> getVersionInfoList();
+    List<VersionInfo> getVersionInfoList(VersionInfoRequest request);
 
 }

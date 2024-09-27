@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wmsj.common.service.impl.BaseServiceImpl;
 import com.wmsj.dao.EquipmentDao;
 import com.wmsj.entity.Equipment;
+import com.wmsj.request.EquipmentRequest;
 import com.wmsj.service.EquipmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +35,9 @@ public class EquipmentServiceImpl extends BaseServiceImpl<EquipmentDao, Equipmen
         return equipmentDao.selectById(id);
     }
     //分页查询
-    public List<Equipment> getEquipmentList() {
+    public List<Equipment> getEquipmentList(EquipmentRequest request) {
         QueryWrapper<Equipment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Equipment::getVersion, request.getVersion());
         return equipmentDao.selectList(queryWrapper);
     }
 }

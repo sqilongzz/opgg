@@ -1,6 +1,7 @@
 package com.wmsj.controller;
 
 import com.wmsj.entity.VersionInfo;
+import com.wmsj.request.VersionInfoRequest;
 import com.wmsj.service.VersionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +47,8 @@ public class VersionInfoController {
         return versionInfoService.getVersionInfoById(id);
 
     }
-    @GetMapping("/getVersionInfoList")
-    public List<VersionInfo> getVersionInfoList() {
-        return versionInfoService.getVersionInfoList();
+    @PostMapping("/getVersionInfoList")
+    public List<VersionInfo> getVersionInfoList(VersionInfoRequest request) {
+        return versionInfoService.getVersionInfoList(request);
     }
 }
