@@ -27,4 +27,13 @@ public enum PositionEnum {
     public String getDesc() {
         return desc;
     }
+
+    public static PositionEnum fromValue(String value) {
+        for (PositionEnum position : PositionEnum.values()) {
+            if (position.getValue().equals(value)) {
+                return position;
+            }
+        }
+        return null; // 或者抛出异常
+    }
 }

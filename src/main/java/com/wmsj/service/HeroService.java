@@ -18,4 +18,6 @@ public interface HeroService extends BaseService<Hero> {
     //分页查询
     List<Hero> getHeroList(HeroRequest request);
 
+    Hero getHeroByHeroId(String heroId);
+
 }

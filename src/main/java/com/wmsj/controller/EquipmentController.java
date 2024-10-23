@@ -3,52 +3,46 @@ package com.wmsj.controller;
 import com.wmsj.entity.Equipment;
 import com.wmsj.request.EquipmentRequest;
 import com.wmsj.service.EquipmentService;
+import com.wmsj.util.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/equipment")
 public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
 
-    @PostMapping("/insertEquipment")
-    public String insertEquipment(@RequestBody Equipment equipment) {
-        int i = equipmentService.insertEquipment(equipment);
-        if (i > 0) {
-            return "success";
-        }
-        //todo log.info
-        //todo id生成规则
-        //todo request->entity
-        return "fail";
+    @PostMapping("/add")
+    public Result<String> insertEquipment(@RequestBody Equipment equipment) {
+        return equipmentService.insertEquipment(equipment) > 0 ?
+                Result.ok("success") : Result.ok("fail");
     }
-    @DeleteMapping("/deleteEquipment")
-    public String deleteEquipment(@RequestParam("id") String id) {
-        int i = equipmentService.deleteEquipment(id);
-        if (i > 0) {
-            return "success";
-        }
-        return "fail";
+
+    @DeleteMapping("/delete")
+    public Result<String> deleteEquipment(@RequestParam("id") String id) {
+        return equipmentService.deleteEquipment(id) > 0 ?
+                Result.ok("success") : Result.ok("fail");
     }
-    @PostMapping("/updateEquipment")
-    public String updateEquipment(@RequestBody Equipment equipment) {
-        //通过版本和英雄名称修改英雄信息
-        int i = equipmentService.updateEquipment(equipment);
-        if (i > 0) {
-            return "success";
-        }
-        return "fail";
+
+    @PostMapping("/update")
+    public Result<String> updateEquipment(@RequestBody Equipment equipment) {
+        return equipmentService.updateEquipment(equipment) > 0 ?
+                Result.ok("success") : Result.ok("fail");
     }
-    @GetMapping("/getEquipment")
-    public Equipment getEquipment(@RequestParam("id") String id) {
-        return equipmentService.getEquipmentById(id);
+
+    @GetMapping("/get")
+    public Result<Equipment> getEquipment(@RequestParam("id") String id) {
+        return Result.ok(equipmentService.getEquipmentById(id));
 
     }
-    @PostMapping("/getEquipmentList")
-    public List<Equipment> getEquipmentList(@RequestBody EquipmentRequest request) {
-        return equipmentService.getEquipmentList(request);
+
+    @PostMapping("/getList")
+    public Result<List<Equipment>> getEquipmentList(@RequestBody EquipmentRequest request) {
+        return Result.ok(equipmentService.getEquipmentList(request));
     }
 }

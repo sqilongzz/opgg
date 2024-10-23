@@ -42,4 +42,11 @@ public class HeroServiceImpl extends BaseServiceImpl<HeroDao, Hero> implements H
         queryWrapper.lambda().eq(Hero::getVersion,request.getVersion());
         return heroDao.selectList(queryWrapper);
     }
+
+    @Override
+    public Hero getHeroByHeroId(String heroId) {
+        QueryWrapper<Hero> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Hero::getHeroId,heroId);
+        return heroDao.selectOne(queryWrapper);
+    }
 }
