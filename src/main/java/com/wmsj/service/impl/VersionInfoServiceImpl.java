@@ -54,6 +54,7 @@ public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, Vers
         }
         QueryWrapper<VersionInfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(VersionInfo::getVersion, request.getVersion());
+        queryWrapper.lambda().eq(VersionInfo::getHeroPosition, request.getPosition());
         List<VersionInfo> versionInfos = versionInfoDao.selectList(queryWrapper);
         //根据heroId获取hero的信息
         return versionInfos.stream().map(e -> {

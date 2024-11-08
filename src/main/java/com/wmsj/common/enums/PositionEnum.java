@@ -1,6 +1,8 @@
 package com.wmsj.common.enums;
 
 public enum PositionEnum {
+    //全部
+    ALL("0","全部"),
     //上路
     UP("1","上路"),
     //打野
