@@ -18,5 +18,6 @@ public interface HeroService extends BaseService<Hero> {
     IPage<HeroResponse> getHeroListPage(HeroRequest request);
     List<String> getHeroIdList(HeroRequest request);
     Hero getHeroByHeroId(String heroId);
+    HeroResponse getHeroDetail(String heroId);
 
 }

@@ -46,6 +46,11 @@ public class HeroController {
         return Result.ok(heroService.getHeroById(id));
     }
 
+    @GetMapping("detail/{heroId}")
+    public Result<HeroResponse> getHeroDetail(@PathVariable("heroId") String heroId) {
+        return Result.ok(heroService.getHeroDetail(heroId));
+    }
+
     /**
      * 根据版本获取英雄信息
      *

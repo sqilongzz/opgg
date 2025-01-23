@@ -60,6 +60,9 @@ public class HeroServiceImpl extends BaseServiceImpl<HeroDao, Hero> implements H
         if(request.getVersion() != null) {
             queryWrapper.lambda().eq(Hero::getVersion,request.getVersion());
         }
+        if(request.getHeroPosition() != null) {
+            queryWrapper.lambda().eq(Hero::getHeroPosition,request.getHeroPosition());
+        }
         if(request.getHeroName() != null || request.getChineseName() != null) {
             queryWrapper.lambda().and(wrapper -> {
                 if(request.getHeroName() != null) {
@@ -85,6 +88,17 @@ public class HeroServiceImpl extends BaseServiceImpl<HeroDao, Hero> implements H
         QueryWrapper<Hero> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Hero::getHeroId,heroId);
         return heroDao.selectOne(queryWrapper);
+    }
+
+    @Override
+    public HeroResponse getHeroDetail(String heroIdList) {
+        QueryWrapper<Hero> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Hero::getHeroId,heroIdList);
+        Hero hero = heroDao.selectOne(queryWrapper);
+        HeroResponse heroResponse = new HeroResponse();
+        BeanUtils.copyProperties(hero,heroResponse);
+        return heroResponse;
+
     }
 
     @Override
