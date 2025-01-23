@@ -1,9 +1,11 @@
-package com.wmsj.request;
+package com.wmsj.response;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-public class HeroRequest {
+public class HeroResponse {
     private String id;
     private String version;
     private String heroId;
@@ -17,7 +19,6 @@ public class HeroRequest {
     private String heroSkillsW;
     private String heroSkillsE;
     private String heroSkillsR;
-
-    private Integer page;
-    private Integer pageSize;
+    private Date createTime;
+    private Date updateTime;
 }

@@ -1,5 +1,6 @@
 package com.wmsj.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wmsj.entity.VersionInfo;
 import com.wmsj.request.VersionInfoRequest;
 import com.wmsj.response.VersionInfoResponse;
@@ -17,13 +18,18 @@ public class VersionInfoController {
     private VersionInfoService versionInfoService;
 
     @PostMapping("/add")
-    public Result<String> insertVersionInfo(@RequestBody VersionInfo versionInfo) {
-        return versionInfoService.insertVersionInfo(versionInfo) > 0 ? Result.ok("success") : Result.ok("fail");
+    public Result<String> insertVersionInfo(@RequestBody VersionInfoRequest versionInfoRequest) {
+        return versionInfoService.insertVersionInfo(versionInfoRequest) > 0 ? Result.ok("success") : Result.ok("fail");
     }
 
-    @DeleteMapping("/delete")
-    public Result<String> deleteVersionInfo(@RequestParam("id") String id) {
+    @DeleteMapping("/delete/{id}")
+    public Result<String> deleteVersionInfo(@PathVariable("id") String id) {
         return versionInfoService.deleteVersionInfo(id) > 0 ? Result.ok("success") : Result.ok("fail");
+    }
+
+    @DeleteMapping("/deleteBatch")
+    public Result<String> deleteBatchHero(@RequestBody List<String> ids) {
+        return versionInfoService.deleteBatchVersionInfo(ids) > 0 ? Result.ok("success") : Result.ok("fail");
     }
 
     @PostMapping("/update")
@@ -37,8 +43,14 @@ public class VersionInfoController {
         return Result.ok(versionInfoService.getVersionInfoById(id));
     }
 
-    @PostMapping("/getList")
+    @PostMapping("/getInfoList")
     public Result<List<VersionInfoResponse>> getVersionInfoList(@RequestBody VersionInfoRequest request) {
         return Result.ok(versionInfoService.getVersionInfoList(request));
     }
+
+    @PostMapping("/getInfoListPage")
+    public Result<IPage<VersionInfoResponse>> getVersionInfoListPage(@RequestBody VersionInfoRequest request) {
+        return Result.ok(versionInfoService.getVersionInfoListPage(request));
+    }
+
 }

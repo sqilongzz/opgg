@@ -1,12 +1,15 @@
 package com.wmsj.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmsj.common.enums.PositionEnum;
 import com.wmsj.common.service.impl.BaseServiceImpl;
 import com.wmsj.dao.VersionInfoDao;
 import com.wmsj.entity.Hero;
 import com.wmsj.entity.VersionInfo;
 import com.wmsj.request.VersionInfoRequest;
+import com.wmsj.response.HeroResponse;
 import com.wmsj.response.VersionInfoResponse;
 import com.wmsj.service.HeroService;
 import com.wmsj.service.VersionInfoService;
@@ -27,22 +30,26 @@ public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, Vers
     @Autowired
     private HeroService heroService;
 
-    //增
-    public int insertVersionInfo(VersionInfo versionInfo) {
+    public int insertVersionInfo(VersionInfoRequest versionInfoRequest) {
+        VersionInfo versionInfo = new VersionInfo();
+        BeanUtils.copyProperties(versionInfoRequest, versionInfo);
+        versionInfo.setId(null);
         return versionInfoDao.insert(versionInfo);
     }
 
-    //删
     public int deleteVersionInfo(String id) {
         return versionInfoDao.deleteById(id);
     }
 
-    //改
+    @Override
+    public int deleteBatchVersionInfo(List<String> ids) {
+        return versionInfoDao.deleteBatchIds(ids);
+    }
+
     public int updateVersionInfo(VersionInfo versionInfo) {
         return versionInfoDao.updateById(versionInfo);
     }
 
-    //查
     public VersionInfo getVersionInfoById(String id) {
         return versionInfoDao.selectById(id);
     }
@@ -50,13 +57,20 @@ public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, Vers
     //分页查询
     public List<VersionInfoResponse> getVersionInfoList(VersionInfoRequest request) {
         if (request.getVersion() == null) {
-            throw new IllegalArgumentException("Version cannot be null");//或者return一个信息
+            throw new IllegalArgumentException("Version cannot be null");
         }
         QueryWrapper<VersionInfo> queryWrapper = new QueryWrapper<>();
+        if(request.getPosition() != null && !request.getPosition().isEmpty() && !"0".equals(request.getPosition())){
+            queryWrapper.lambda().eq(VersionInfo::getHeroPosition, request.getPosition());
+        }
+        if(request.getRankLevel() != null){
+            queryWrapper.lambda().eq(VersionInfo::getRankLevel, request.getRankLevel());
+        }
         queryWrapper.lambda().eq(VersionInfo::getVersion, request.getVersion());
-        queryWrapper.lambda().eq(VersionInfo::getHeroPosition, request.getPosition());
+        // 将 strength 字段（可能是字符串类型）转换为有符号整数类型
+        queryWrapper.orderByAsc("CAST(strength AS SIGNED)");
         List<VersionInfo> versionInfos = versionInfoDao.selectList(queryWrapper);
-        //根据heroId获取hero的信息
+        
         return versionInfos.stream().map(e -> {
                     VersionInfoResponse versionInfoResponse = new VersionInfoResponse();
                     BeanUtils.copyProperties(e, versionInfoResponse);
@@ -64,19 +78,65 @@ public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, Vers
                     versionInfoResponse.setHeroName(hero.getHeroName());
                     versionInfoResponse.setEnglishName(hero.getEnglishName());
                     versionInfoResponse.setPicUrl(hero.getPicUrl());
-                    versionInfoResponse.setHeroPosition(PositionEnum.fromValue(versionInfoResponse.getHeroPosition()).getDesc());
-                    //优势对抗 todo 循环
-                    Hero advantageAgainstHero = heroService.getHeroByHeroId(e.getAdvantageAgainst());
+//                    if(e.getHeroPosition() != null) {
+//                        versionInfoResponse.setHeroPosition(PositionEnum.fromValue(e.getHeroPosition()).getDesc());
+//                    }
+                    //优势对抗
+                    String[] advantageAgainstItems = e.getAdvantageAgainst().split(",");
                     List<Hero> advantageList = new ArrayList<>();
-                    advantageList.add(advantageAgainstHero);
+                    for(String item: advantageAgainstItems){
+                        Hero advantageAgainstHero = heroService.getHeroByHeroId(item);
+                        advantageList.add(advantageAgainstHero);
+                    }
                     versionInfoResponse.setAdvantageAgainstList(advantageList);
-                    //劣势对抗 todo 循环
-                    Hero inferiorityAgainstHero = heroService.getHeroByHeroId(e.getInferiorityAgainst());
+                    //劣势对抗
+                    String[] inferiorityAgainstItems = e.getInferiorityAgainst().split(",");
                     List<Hero> inferiorityList = new ArrayList<>();
-                    inferiorityList.add(inferiorityAgainstHero);
+                    for(String item: inferiorityAgainstItems){
+                        Hero inferiorityAgainstHero = heroService.getHeroByHeroId(item);
+                        inferiorityList.add(inferiorityAgainstHero);
+                    }
                     versionInfoResponse.setInferiorityAgainstList(inferiorityList);
                     return versionInfoResponse;
                 }
         ).collect(Collectors.toList());
+    }
+
+    @Override
+    public IPage<VersionInfoResponse> getVersionInfoListPage(VersionInfoRequest request) {
+        QueryWrapper<VersionInfo> queryWrapper = new QueryWrapper<>();
+        if(request.getVersion() != null) {
+            queryWrapper.lambda().eq(VersionInfo::getVersion,request.getVersion());
+        }
+        IPage<VersionInfo> page = new Page<>(request.getPage(),request.getPageSize());
+        IPage<VersionInfo> versionInfoPage = versionInfoDao.selectPage(page,queryWrapper);
+        return versionInfoPage.convert(versionInfo -> {
+            VersionInfoResponse versionInfoResponse = new VersionInfoResponse();
+            BeanUtils.copyProperties(versionInfo,versionInfoResponse);
+            Hero hero = heroService.getHeroByHeroId(versionInfo.getHeroId());
+            versionInfoResponse.setHeroName(hero.getHeroName());
+            versionInfoResponse.setEnglishName(hero.getEnglishName());
+            versionInfoResponse.setPicUrl(hero.getPicUrl());
+//                    if(e.getHeroPosition() != null) {
+//                        versionInfoResponse.setHeroPosition(PositionEnum.fromValue(e.getHeroPosition()).getDesc());
+//                    }
+            //优势对抗
+            String[] advantageAgainstItems = versionInfo.getAdvantageAgainst().split(",");
+            List<Hero> advantageList = new ArrayList<>();
+            for(String item: advantageAgainstItems){
+                Hero advantageAgainstHero = heroService.getHeroByHeroId(item);
+                advantageList.add(advantageAgainstHero);
+            }
+            versionInfoResponse.setAdvantageAgainstList(advantageList);
+            //劣势对抗
+            String[] inferiorityAgainstItems = versionInfo.getInferiorityAgainst().split(",");
+            List<Hero> inferiorityList = new ArrayList<>();
+            for(String item: inferiorityAgainstItems){
+                Hero inferiorityAgainstHero = heroService.getHeroByHeroId(item);
+                inferiorityList.add(inferiorityAgainstHero);
+            }
+            versionInfoResponse.setInferiorityAgainstList(inferiorityList);
+            return versionInfoResponse;
+        });
     }
 }

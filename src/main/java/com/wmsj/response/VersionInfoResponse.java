@@ -7,10 +7,12 @@ import java.util.List;
 
 @Data
 public class VersionInfoResponse {
+    private String id;
     private String version;
     private String heroId;
     private String heroName;
     private String englishName;
+    private String equipmentId;
     private String picUrl;
     private String rankLevel;
     private String strength;
