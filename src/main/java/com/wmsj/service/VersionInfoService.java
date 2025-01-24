@@ -14,6 +14,7 @@ public interface VersionInfoService extends BaseService<VersionInfo> {
     int deleteBatchVersionInfo(List<String> ids);
     int updateVersionInfo(VersionInfo versionInfo);
     VersionInfo getVersionInfoById(String id);
+    VersionInfo getVersionInfoByHeroId(String heroId);
     List<VersionInfoResponse> getVersionInfoList(VersionInfoRequest request);
     IPage<VersionInfoResponse> getVersionInfoListPage(VersionInfoRequest request);
 }

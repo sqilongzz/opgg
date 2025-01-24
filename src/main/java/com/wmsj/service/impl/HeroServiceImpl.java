@@ -5,8 +5,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wmsj.common.service.impl.BaseServiceImpl;
 import com.wmsj.dao.HeroDao;
+import com.wmsj.dao.VersionInfoDao;
 import com.wmsj.entity.Hero;
+import com.wmsj.entity.VersionInfo;
 import com.wmsj.request.HeroRequest;
+import com.wmsj.response.HeroDetailResponse;
 import com.wmsj.response.HeroResponse;
 import com.wmsj.service.HeroService;
 import lombok.AllArgsConstructor;
@@ -23,6 +26,9 @@ import java.util.stream.Collectors;
 public class HeroServiceImpl extends BaseServiceImpl<HeroDao, Hero> implements HeroService {
     @Autowired
     private HeroDao heroDao;
+
+    @Autowired
+    private VersionInfoDao versionInfoDao;
 
     public int insertHero(HeroRequest heroRequest) {
         Hero hero = new Hero();
@@ -91,13 +97,17 @@ public class HeroServiceImpl extends BaseServiceImpl<HeroDao, Hero> implements H
     }
 
     @Override
-    public HeroResponse getHeroDetail(String heroIdList) {
+    public HeroDetailResponse getHeroDetail(String heroId) {
+        HeroDetailResponse heroDetailResponse = new HeroDetailResponse();
         QueryWrapper<Hero> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Hero::getHeroId,heroIdList);
+        queryWrapper.lambda().eq(Hero::getHeroId,heroId);
         Hero hero = heroDao.selectOne(queryWrapper);
-        HeroResponse heroResponse = new HeroResponse();
-        BeanUtils.copyProperties(hero,heroResponse);
-        return heroResponse;
+        BeanUtils.copyProperties(hero,heroDetailResponse);
+        QueryWrapper<VersionInfo> queryWrapperInfo = new QueryWrapper<>();
+        queryWrapperInfo.lambda().eq(VersionInfo::getHeroId,heroId);
+        VersionInfo versionInfo = versionInfoDao.selectOne(queryWrapperInfo);
+        BeanUtils.copyProperties(versionInfo,heroDetailResponse);
+        return heroDetailResponse;
 
     }
 

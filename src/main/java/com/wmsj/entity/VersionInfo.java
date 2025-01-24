@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @TableName("tb_version_info")
 public class VersionInfo {
@@ -24,6 +26,8 @@ public class VersionInfo {
     private String banRate;
     private String advantageAgainst;
     private String inferiorityAgainst;
+    private Date createTime;
+    private Date updateTime;
 //    "id":"",
 //    "version":"",
 //    "heroId":"",

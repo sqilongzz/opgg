@@ -3,6 +3,7 @@ package com.wmsj.response;
 import com.wmsj.entity.Hero;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -24,4 +25,6 @@ public class VersionInfoResponse {
     private List<Hero> advantageAgainstList;
     private String inferiorityAgainst;
     private List<Hero> inferiorityAgainstList;
+    private Date createTime;
+    private Date updateTime;
 }

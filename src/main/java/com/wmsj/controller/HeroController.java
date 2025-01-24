@@ -3,6 +3,7 @@ package com.wmsj.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.wmsj.entity.Hero;
 import com.wmsj.request.HeroRequest;
+import com.wmsj.response.HeroDetailResponse;
 import com.wmsj.response.HeroResponse;
 import com.wmsj.service.HeroService;
 import com.wmsj.util.Result;
@@ -47,7 +48,7 @@ public class HeroController {
     }
 
     @GetMapping("detail/{heroId}")
-    public Result<HeroResponse> getHeroDetail(@PathVariable("heroId") String heroId) {
+    public Result<HeroDetailResponse> getHeroDetail(@PathVariable("heroId") String heroId) {
         return Result.ok(heroService.getHeroDetail(heroId));
     }
 

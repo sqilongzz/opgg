@@ -3,13 +3,11 @@ package com.wmsj.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.wmsj.common.enums.PositionEnum;
 import com.wmsj.common.service.impl.BaseServiceImpl;
 import com.wmsj.dao.VersionInfoDao;
 import com.wmsj.entity.Hero;
 import com.wmsj.entity.VersionInfo;
 import com.wmsj.request.VersionInfoRequest;
-import com.wmsj.response.HeroResponse;
 import com.wmsj.response.VersionInfoResponse;
 import com.wmsj.service.HeroService;
 import com.wmsj.service.VersionInfoService;
@@ -19,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +26,7 @@ import java.util.stream.Collectors;
 public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, VersionInfo> implements VersionInfoService {
     @Autowired
     private VersionInfoDao versionInfoDao;
+
     @Autowired
     private HeroService heroService;
 
@@ -34,6 +34,8 @@ public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, Vers
         VersionInfo versionInfo = new VersionInfo();
         BeanUtils.copyProperties(versionInfoRequest, versionInfo);
         versionInfo.setId(null);
+        versionInfo.setCreateTime(new Date());
+        versionInfo.setUpdateTime(new Date());
         return versionInfoDao.insert(versionInfo);
     }
 
@@ -52,6 +54,13 @@ public class VersionInfoServiceImpl extends BaseServiceImpl<VersionInfoDao, Vers
 
     public VersionInfo getVersionInfoById(String id) {
         return versionInfoDao.selectById(id);
+    }
+
+    @Override
+    public VersionInfo getVersionInfoByHeroId(String heroId) {
+        QueryWrapper<VersionInfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(VersionInfo::getHeroId,heroId);
+        return versionInfoDao.selectOne(queryWrapper);
     }
 
     //分页查询
